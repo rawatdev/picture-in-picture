@@ -1,28 +1,38 @@
 const videoElement = document.getElementById("video");
-const button = document.getElementById("button");
+const pipBtn = document.getElementById("pip");
 
 // Prompt to select media stream, pass to video element, then play
-async function selectMediaStream() {
-  try {
-    const mediaStream = await navigator.mediaDevices.getDisplayMedia();
-    videoElement.srcObject = mediaStream;
-    videoElement.onloadedmetadata = () => {
-      videoElement.play();
-    };
-  } catch (err) {
-    // catch err here
-    console.log("whoops! error", err);
-  }
+function selectMediaStream() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getDisplayMedia();
+      videoElement.srcObject = mediaStream;
+      videoElement.onloadedmetadata = () => {
+        videoElement.play();
+        resolve();
+      };
+    } catch (err) {
+      // catch err here
+      reject();
+    }
+  });
 }
 
-button.addEventListener("click", async () => {
-  // Disable button
-  button.disabled = true;
-  // Start Picture in Picture
-  await videoElement.requestPictureInPicture();
-  // Reset
-  button.disabled = false;
+pipBtn.addEventListener("click", () => {
+  if (document.pictureInPictureElement) {
+    document.exitPictureInPicture();
+    pipBtn.textContent = "START PIP";
+    location.reload();
+  } else {
+    pipBtn.textContent = "STOP PIP";
+    selectMediaStream().then(async () => {
+      await videoElement.requestPictureInPicture();
+    });
+  }
 });
 
-// On load
-selectMediaStream();
+if (!document.pictureInPictureEnabled) {
+  pipBtn.disabled = true;
+  pipBtn.textContent = "PIP is Disabled";
+  pipBtn.classList.add("disabled");
+}

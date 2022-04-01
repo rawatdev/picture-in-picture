@@ -22,16 +22,18 @@ body {
   padding: 10px;
   border-radius: 7px;
   box-shadow: inset 0 20px 4px -19px rgba(255, 255, 255, 0.7);
+  display: flex;
+  gap: 20px;
 }
 
 button {
-  width: 120px;
+  width: 150px;
   height: 75px;
   font-family: "Barlow", sans-serif;
   font-size: 25px;
   color: #fff;
   text-shadow: 0 2px 5px #000;
-  background: linear-gradient(to top, #696969, #575757);
+  background: linear-gradient(to top, #8989b8, #6570d4);
   border: 2px solid #000;
   border-radius: 7px;
   box-shadow: inset 0 20px 4px -19px rgba(255, 255, 255, 0.4),
@@ -48,3 +50,9 @@ button:active {
   transform: translateY(3px);
   box-shadow: 0 6px 6px 0px rgba(0, 0, 0, 0.3);
 }
+
+button.disabled {
+  background: rgb(67, 68, 70);
+}
+
+/* Experimental */
